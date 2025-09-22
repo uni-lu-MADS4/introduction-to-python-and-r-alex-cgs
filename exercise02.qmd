@@ -1,7 +1,7 @@
 ---
 title: "Getting started with R and Python"
 date: 2025-09-22
-author: "Your name"
+author: "Alexandre Tinouert"
 format: html
 embed-resources: true
 ---
@@ -18,10 +18,13 @@ embed-resources: true
  
 ```{r}
 # Write answer here
+2 + 6 * 5 ^ 2
+# = (5²) * 6 + 2
 ```
 
 
  - Which operator has the higher priority?
+ - The square operator comes first
 
 ::: unilur-solution
 Exponentiation
@@ -33,6 +36,8 @@ Exponentiation
 
 ```{r}
 # Write answer here
+(2 + 6) * 5 ^ 2
+# = 25 * 8 = 200
 ```
  
 
@@ -47,18 +52,34 @@ b = 10
 
 ```{python}
 # Write answer here
+a,b = b,a
+
+# c = a
+# a = b
+# b = c
+
+# a = a + b
+# b = a - b
+# a = a - b
+
+# a, b = b, a
+print(a, b)
+
 ```
 
 ### What is the output of the following code?
 
 ```{python}
-# Write answer here
+x = 7
+1 < x < 10 < x + 3 <= 13
 ```
 
 Explain in your words!
 
+- If x = 7, then 1 < 7 is true, 7 < 10 is true, but 10 < 10 is false.
+
 ::: unilur-solution
-Python parses four expressions, 1 < x and x < 10 and 10 < x + 3 and x + 3 <= 13 [ ] True or [ ] False 
+Python parses four expressions, 1 < x and x < 10 and 10 < x + 3 and x + 3 <= 13 [X] True or [ ] False 
 :::
 
 
@@ -82,6 +103,45 @@ Consider `is.na()` to identify indeces of missing positions.
 
 ```{r}
 # Write answer here
+sample_array = c(18, 20, 34, 53, 12, NA, NA, 72, 75, 13)
+
+
+# 1) WE REPLACE NA WITH 0
+
+new_array = replace(x <- sample_array, is.na(x), 0)
+
+sum_array = sum(new_array)
+
+sum_array # 297
+
+len_array = length(new_array)
+
+len_array # 10
+
+avg1 = sum_array / len_array
+
+avg1 # 29.7
+
+
+# 2) WE REMOVE NA or 0 VALUES
+
+filtered_array = new_array[new_array != 0]
+
+filtered_array
+
+filtered_sum = sum(filtered_array)
+filtered_sum # 297
+
+filtered_len = length(filtered_array)
+filtered_len # 8
+
+avg2 = filtered_sum / filtered_len
+avg2 # 37.125
+
+# The error when not taking the NA or 0 values into account is:
+error = avg2 - avg1
+error # 7.425
+
 ```
 
 ### Create a data frame
@@ -95,16 +155,31 @@ Paul  | 16  | 57.0 |green  |   1
 
 ```{r}
 # Write answer here
+classroom <- data.frame(
+  name = c("Paul", "Mary", "Sara", "John"),
+  age = c(16, 16, 16, 17),
+  eye = c("green", "blue", "black", "blue"),
+  group = c(1, 1, 2, 2)
+)
+classroom
 ```
 
 Assign the data frame to a variable named `classroom`.
 
 Describe the type of variables in `classroom`.
 
+- We have different columns as vectors (example: "name" is a vector column) where we can find either integers or strings.
+
 Which data structure would you use in base Python?
+
+- If no pandas: either nested arrays or dictionaries, otherwise data frames as well.
 
 ```{python}
 # Write answer here
+
+classroom = [{"name": "Paul", "age": 16, "eye": "green", "group": 1}, {"name": "Mary", "age": 16, "eye": "blue", "group": 1}, {"name": "Sara", "age": 16, "eye": "black", "group": 2}, {"name": "John", "age": 17, "eye": "blue", "group": 2}]
+
+classroom # prefer not to use name as key, since at some point there may be multiple "Paul" in a class
 ```
 
 
@@ -194,12 +269,30 @@ Using `mtcars` (R) and the provided dictionary (Python):
    
 ```{r}
 # Write answer here
+# filtered_mt <- subset(mtcars, cyl == 6, select = c(mpg))
+# filtered_mt # only mpg where cyl = 6
+
+# mean_mpg = mean(with(filtered_mt, mpg))
+# mean_mpg # 19.74286
+
+filtered_mt <- mtcars['mpg'][mtcars['cyl'] == 6]
+filtered_mt
+
+mean_mpg = mean(filtered_mt)
+mean_mpg # 19.74286
 ```
 
 - In base Python, calculate the same quantity.
 
 ```{python}
 # Write answer here
+filtered_mt = [mtcars["mpg"][i] if mtcars["cyl"][i] == 6 else for i in range(len(mtcars["mpg"]))]
+
+filtered_mt
+
+mean = sum(filtered_mt) / len(filtered_mt)
+mean # 19.74285714285714
+
 ```
 
 
@@ -209,12 +302,33 @@ Using `mtcars` (R) and the provided dictionary (Python):
 
 ```{r}
 # Write answer here
+# n_filtered_mt <- mtcars[mtcars['mpg'] > 20 & mtcars['hp'] <= 100]
+# n_filtered_mt # only mpg > 20 and hp <= 100
+
+# n_len = dim(n_filtered_mt)
+# n_len # 9 x 11, 9 lines
+
+n_filtered_mt <- mtcars['mpg'][mtcars['mpg'] > 6 & mtcars['hp'] <= 100]
+n_filtered_mt
+
+n_len = length(n_filtered_mt)
+n_len # 9 x 11, 9 lines
+
 ```
 
 - In Python, perform the same operation.
 
 ```{python}
 # Write answer here
+n_filtered_mt = [mtcars["name"][i] if (mtcars["mpg"][i] > 20 and mtcars["hp"][i] <= 100) else None for i in range(len(mtcars["mpg"]))]
+
+while None in n_filtered_mt:
+  n_filtered_mt.remove(None)
+
+n_filtered_mt
+
+len_nfmt = len(n_filtered_mt)
+len_nfmt # 9
 ```
 
 
@@ -226,6 +340,10 @@ Using `mtcars` (R) and the provided dictionary (Python):
 
 ```{r}
 # Write answer here
+typeof(mtcars$mpg) # double
+
+int_mpg = as.integer(mtcars$mpg)
+int_mpg
 ```
 
 - In Python, check the type of `mtcars['mpg']` and coerce it to a list of integers.
@@ -233,6 +351,12 @@ Using `mtcars` (R) and the provided dictionary (Python):
  
 ```{python}
 # Write answer here
+type(mtcars['mpg']) # list
+type(mtcars['mpg'][0]) # float
+
+int_mpg = [int(elt) for elt in mtcars['mpg']]
+int_mpg # list of ints
+
 ```
 
 
@@ -241,12 +365,24 @@ Using `mtcars` (R) and the provided dictionary (Python):
 
 ```{r}
 # Write answer here
+sub_filtered_mt <- subset(mtcars, gear == 4, select = c(mpg, hp))
+sub_filtered_mt # only mpg and hp where gear = 4
+
+len_sub = dim(sub_filtered_mt)
+len_sub # 12 x 2: 12 lines
 ```
 
 - In Python, perform the same operation using explicit iteration.
 
 ```{python}
 # Write answer here
+sub_filtered_mt = [(mtcars["mpg"][i], mtcars["hp"][i]) if mtcars["gear"][i] == 4 else None for i in range(len(mtcars["mpg"]))]
+
+while None in sub_filtered_mt:
+  sub_filtered_mt.remove(None)
+
+len(sub_filtered_mt) # 12
+
 ```
 
 
@@ -258,11 +394,25 @@ Using `mtcars` (R) and the provided dictionary (Python):
 
 ```{r}
 # Write answer here
+library(tidyverse)
+dplyr::filter(mtcars, am==1)
+
+final_len = dim(dplyr::filter(mtcars, am==1))
+final_len # 13 x 11: 13 cars
 ```
 
 - In Python, import the `statistics` module and calculate the mean `mpg` for cars with `am == 1`.
 ```{python}
 # Write answer here
+import statistics
+
+final_filtered_mt = [mtcars["mpg"][i] if mtcars["am"][i] == 1 else None for i in range(len(mtcars["mpg"]))]
+
+while None in final_filtered_mt:
+  final_filtered_mt.remove(None)
+
+statistics.mean(final_filtered_mt) # 24.392307692307693
+
 ```
 
 
