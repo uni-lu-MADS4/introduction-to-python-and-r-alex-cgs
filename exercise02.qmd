@@ -62,7 +62,6 @@ a,b = b,a
 # b = a - b
 # a = a - b
 
-# a, b = b, a
 print(a, b)
 
 ```
@@ -286,12 +285,15 @@ mean_mpg # 19.74286
 
 ```{python}
 # Write answer here
-filtered_mt = [mtcars["mpg"][i] if mtcars["cyl"][i] == 6 else for i in range(len(mtcars["mpg"]))]
+filtered_mt = [mtcars["mpg"][i] if mtcars["cyl"][i] == 6 else None for i in range(len(mtcars["mpg"]))]
+
+while None in filtered_mt:
+  filtered_mt.remove(None)
 
 filtered_mt
 
-mean = sum(filtered_mt) / len(filtered_mt)
-mean # 19.74285714285714
+f_mean = sum(filtered_mt) / len(filtered_mt)
+f_mean # 19.74285714285714
 
 ```
 
